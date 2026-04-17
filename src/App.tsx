@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Phone, Mail, Instagram, Facebook, Clock, Send, Star, Leaf, Flame, Utensils } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Menu, X, Clock, Star } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
@@ -39,12 +39,6 @@ const royalMenu = [
   { name: "Degree Coffee", desc: "Authentic Kumbakonam filter coffee to perfectly end the feast." }
 ];
 
-const ingredients = [
-  { name: "Hand-Pounded Spices", desc: "Sourced directly from the spice gardens of Kerala.", icon: <Leaf size={32} /> },
-  { name: "Pure Desi Ghee", desc: "Traditional bilona ghee for that authentic aroma.", icon: <Flame size={32} /> },
-  { name: "Heirloom Rice", desc: "Aged specific rice varieties for perfect texture.", icon: <Utensils size={32} /> }
-];
-
 const cookingProcess = [
   { step: "01", title: "Sourcing", desc: "Selecting the finest organic ingredients at dawn." },
   { step: "02", title: "Preparation", desc: "Traditional hand-grinding of spices to retain natural oils." },
@@ -73,7 +67,6 @@ const NavLink: React.FC<NavLinkProps> = ({ href, label, onClick }) => (
 const App: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
 
   // GSAP Refs
   const mainRef = useRef<HTMLDivElement>(null);
@@ -161,7 +154,6 @@ const App: React.FC = () => {
 
   }, { scope: mainRef });
 
-  const handleFormSubmit = (e: React.FormEvent) => { e.preventDefault(); setFormStatus('submitting'); setTimeout(() => setFormStatus('success'), 1500); };
   const scrollToSection = (id: string) => { document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }); setIsMobileMenuOpen(false); };
 
   const fadeUpVariant = { hidden: { opacity: 0, y: 40 }, visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } } };
@@ -341,7 +333,7 @@ const App: React.FC = () => {
             
             <div className="z-20 w-40 md:w-80 h-40 md:h-80 rounded-full overflow-hidden border-8 border-white shadow-2xl bg-white"><img src="/assets/menu-main-center.png" alt="Center Dish" className="w-full h-full object-cover" /></div>
             
-            {menuItems.map((item, idx) => (
+            {menuItems.map((item) => (
               // Pre-calculated static positions, animated by GSAP for performance
               <div key={item.id} className="orbit-item absolute z-30 flex flex-col items-center group cursor-pointer" style={{ transform: `translate(${Math.cos(item.angle * (Math.PI / 180)) * (window.innerWidth < 768 ? 140 : 350)}px, ${Math.sin(item.angle * (Math.PI / 180)) * (window.innerWidth < 768 ? 140 : 350)}px)` }}>
                 <div className="w-20 md:w-40 h-20 md:h-40 rounded-full overflow-hidden border-4 border-white shadow-lg mb-3 bg-white"><img src={item.img} alt={item.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" /></div>
